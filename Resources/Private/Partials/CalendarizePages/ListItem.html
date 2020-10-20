@@ -1,9 +1,27 @@
 {namespace c=HDNET\Calendarize\ViewHelpers}
 
 <f:alias map="{page: index.originalObject}">
-    <li class="event">
-        <f:link.page pageUid="{page.uid}">
-            <h2>{page.title}</h2>
-        </f:link.page>
-    </li>
+	<div class="panel panel-default state-{index.state}">
+		<div class="panel-body">
+			<div class="media calendarize-item">
+				<div class="media-body">
+					<h2>
+						<f:link.page pageUid="{page.uid}">
+							<f:render partial="{index.configuration.partialIdentifier}/Title" arguments="{index: index}"/>
+						</f:link.page>
+					</h2>
+					<h4>
+						<f:if condition="{index.state}=='canceled'">
+							<f:then>
+								<f:translate key="canceled"/>
+							</f:then>
+							<f:else>
+								<f:render partial="DateInformation" arguments="{index: index}"/>
+							</f:else>
+						</f:if>
+					</h4>
+				</div>
+			</div>
+		</div>
+	</div>
 </f:alias>
