@@ -3,6 +3,8 @@
 namespace HDNET\CalendarizePages\Domain\Model;
 
 use HDNET\Autoloader\Annotation\DatabaseTable;
+use TYPO3\CMS\Extbase\Domain\Model\Category;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @DatabaseTable("pages")
