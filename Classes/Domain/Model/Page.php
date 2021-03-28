@@ -34,15 +34,23 @@ class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var string
      */
     protected $author = '';
-
+    
+    /**
+     * Categories.
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
+     */
+    protected $categories;
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
      */
+    
     protected $media;
 
     public function __construct()
     {
         $this->media = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
     }
 
     public function getTitle(): string
@@ -102,5 +110,10 @@ class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setMedia(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $media): void
     {
         $this->media = $media;
+    }
+    
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
