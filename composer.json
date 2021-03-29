@@ -28,9 +28,9 @@
 		}
 	],
 	"require": {
-		"php": "^7.2||^7.3||^7.4",
+		"php": "^7.3||^7.4",
 		"typo3/cms-core": "^10.4.6",
-		"lochmueller/calendarize": "^7.1"
+		"lochmueller/calendarize": "^7.1||^8.0||^9.0"
 	},
 	"replace": {
 		"typo3-ter/calendarize-pages": "self.version"
