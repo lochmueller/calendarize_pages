@@ -14,7 +14,7 @@ use HDNET\CalendarizePages\Domain\Model\Page;
 class EventRegister
 {
 
-    public const DOKTYPE_EVENT = 232;
+    public const DOKTYPE_EVENT = 132;
     
     /**
      * @return array
