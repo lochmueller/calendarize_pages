@@ -2,6 +2,8 @@
 
 use HDNET\Autoloader\Utility\ArrayUtility;
 use HDNET\Autoloader\Utility\ModelUtility;
+use HDNET\CalendarizePages\EventRegister;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 $GLOBALS['TCA']['pages'] = ModelUtility::getTcaOverrideInformation('calendarize_pages', 'pages');
 
@@ -10,13 +12,13 @@ $custom = [];
 $GLOBALS['TCA']['pages'] = ArrayUtility::mergeRecursiveDistinct($GLOBALS['TCA']['pages'], $custom);
 
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(
+ExtensionManagementUtility::addTcaSelectItem(
     'pages',
     'doktype',
     [
         'Event',
-        (string) \HDNET\CalendarizePages\EventRegister::DOKTYPE_EVENT,
-        'calendarize-event-page',
+        (string) EventRegister::DOKTYPE_EVENT,
+        'calendarize-pages-extension',
     ],
     '1',
     'after'
@@ -27,16 +29,16 @@ $GLOBALS['TCA']['pages'] = ArrayUtility::mergeRecursiveDistinct($GLOBALS['TCA'][
     [
         'ctrl' => [
             'typeicon_classes' => [
-                (string) \HDNET\CalendarizePages\EventRegister::DOKTYPE_EVENT => 'calendarize-event-page',
+                (string) EventRegister::DOKTYPE_EVENT => 'calendarize-pages-extension',
             ],
         ],
         'types' => [
-            (string) \HDNET\CalendarizePages\EventRegister::DOKTYPE_EVENT => $GLOBALS['TCA']['pages']['types'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
+            (string) EventRegister::DOKTYPE_EVENT => $GLOBALS['TCA']['pages']['types'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
         ],
     ]
 );
 
-$GLOBALS['TCA']['pages']['types'][(string) \HDNET\CalendarizePages\EventRegister::DOKTYPE_EVENT]['columnsOverrides'] = [
+$GLOBALS['TCA']['pages']['types'][(string) EventRegister::DOKTYPE_EVENT]['columnsOverrides'] = [
     'calendarize' => [
         'config' => [
             'minitems' => 1,

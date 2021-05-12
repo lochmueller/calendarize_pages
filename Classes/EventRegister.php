@@ -30,4 +30,11 @@ class EventRegister
             'required' => false,
         ];
     }
+
+    public static function getAutoloaderConfiguration():array {
+        return [
+            'SmartObjects',
+            'Icon',
+        ];
+    }
 }
