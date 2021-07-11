@@ -15,6 +15,8 @@ class EventRegister
 {
 
     public const DOKTYPE_EVENT = 132;
+
+    public const REGISTER_KEY = 'CalendarizePages';
     
     /**
      * @return array
@@ -22,7 +24,7 @@ class EventRegister
     public static function getConfigurationPages(): array
     {
         return [
-            'uniqueRegisterKey' => 'CalendarizePages',
+            'uniqueRegisterKey' => self::REGISTER_KEY,
             'title' => 'Calendarize Page',
             'modelName' => Page::class,
             'partialIdentifier' => 'CalendarizePages',
@@ -34,7 +36,6 @@ class EventRegister
     public static function getAutoloaderConfiguration():array {
         return [
             'SmartObjects',
-            'Icon',
         ];
     }
 }

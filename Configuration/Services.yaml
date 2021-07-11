@@ -12,3 +12,9 @@ services:
       - name: event.listener
         identifier: 'calendarizePagesSearch'
         event: HDNET\Calendarize\Event\IndexRepositoryFindBySearchEvent
+
+  HDNET\CalendarizePages\EventListener\PagesEventConstraintsListener:
+    tags:
+      - name: event.listener
+        identifier: 'pagesEventConstraints'
+        event: HDNET\Calendarize\Event\IndexRepositoryDefaultConstraintEvent

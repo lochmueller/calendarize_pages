@@ -18,10 +18,18 @@ class PageRepository extends Repository
      *
      * @return array
      */
-    public function getIdsBySearchTerm($searchTerm)
+    public function getIdsBySearch(string $searchTerm, int $category)
     {
         $query = $this->createQuery();
-        $constraint = $this->getConstraintForSearchWord($query, $searchTerm);
+        $constraint = [];
+
+        if ($searchTerm !== '') {
+            $constraint['searchTerm'] = $this->getConstraintForSearchWord($query, $searchTerm);
+        }
+        if ($category) {
+            $constraint['categories'] = $query->contains('categories', $category);
+        }
+
         $query->matching($query->logicalOr($constraint));
         $rows = $query->execute(true);
 
