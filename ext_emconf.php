@@ -16,7 +16,7 @@ $EM_CONF[$_EXTKEY] = [
         'depends' => [
             'typo3' => '10.4.6-10.4.99',
             'php' => '7.3.0-7.4.99',
-            'calendarize' => '10.0.0-10.99.99',
+            'calendarize' => '10.0.0-11.99.99',
         ],
     ],
     'autoload' => [
