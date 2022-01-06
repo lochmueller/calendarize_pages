@@ -14,9 +14,9 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'tim@fruit-lab.de',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.6-10.4.99',
-            'php' => '7.3.0-7.4.99',
-            'calendarize' => '10.0.0-11.99.99',
+            'typo3' => '10.4.6-11.5.99',
+            'php' => '7.3.0-8.0.99',
+            'calendarize' => '10.0.0-12.99.99',
         ],
     ],
     'autoload' => [
