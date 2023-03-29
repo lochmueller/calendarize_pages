@@ -5,36 +5,22 @@ namespace HDNET\CalendarizePages\EventListener;
 use HDNET\Calendarize\Domain\Model\PluginConfiguration;
 use HDNET\Calendarize\Event\IndexRepositoryDefaultConstraintEvent;
 use HDNET\Calendarize\Utility\HelperUtility;
-use HDNET\CalendarizePages\EventRegister;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 class PagesEventConstraintsListener
 {
-    public function __invoke(IndexRepositoryDefaultConstraintEvent $event)
+    public function __invoke(IndexRepositoryDefaultConstraintEvent $event): void
     {
-        if (!empty($event->getIndexTypes()) && !\in_array(EventRegister::REGISTER_KEY, $event->getIndexTypes(), true)) {
+        if (!empty($event->getIndexTypes()) && !in_array('CalendarizePages', $event->getIndexTypes(), true)) {
             return;
         }
 
         $categoryIds = $this->getPossibleCategories($event);
-
-
         if (empty($categoryIds)) {
             return;
         }
 
-        $db = HelperUtility::getDatabaseConnection('pages');
-        $q = $db->createQueryBuilder();
-        $q->resetQueryParts();
-        $rows = $q->select('uid_foreign')
-            ->from('sys_category_record_mm')
-            ->where(
-                $q->expr()->in('uid_local', $categoryIds),
-                $q->expr()->eq('tablenames', $q->quote('pages')),
-                $q->expr()->eq('fieldname', $q->quote('categories'))
-            )
-            ->execute()
-            ->fetchAll();
+        $rows = $this->getPageUidsByReferencedCategories($categoryIds);
 
         $indexIds = $event->getIndexIds();
         foreach ($rows as $row) {
@@ -45,33 +31,42 @@ class PagesEventConstraintsListener
         $event->setIndexIds($indexIds);
     }
 
-    protected function getPossibleCategories(IndexRepositoryDefaultConstraintEvent $event):array {
-
+    protected function getPossibleCategories(IndexRepositoryDefaultConstraintEvent $event): array
+    {
         $table = 'sys_category_record_mm';
-        $db = HelperUtility::getDatabaseConnection($table);
-        $q = $db->createQueryBuilder();
+        $queryBuilder = HelperUtility::getQueryBuilder($table);
         $additionalSlotArguments = $event->getAdditionalSlotArguments();
 
         $categoryIds = [];
-        if (isset($additionalSlotArguments['contentRecord']['uid']) && MathUtility::canBeInterpretedAsInteger($additionalSlotArguments['contentRecord']['uid'])) {
-            $rows = $q->select('uid_local')
+        if (
+            isset($additionalSlotArguments['contentRecord']['uid'])
+            && MathUtility::canBeInterpretedAsInteger($additionalSlotArguments['contentRecord']['uid'])
+        ) {
+            $rows = $queryBuilder
+                ->select('uid_local')
                 ->from($table)
                 ->where(
-                    $q->expr()->andX(
-                        $q->expr()->eq('tablenames', $q->quote('tt_content')),
-                        $q->expr()->eq('fieldname', $q->quote('categories')),
-                        $q->expr()->eq('uid_foreign', $q->createNamedParameter($additionalSlotArguments['contentRecord']['uid']))
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tt_content')),
+                        $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('categories')),
+                        $queryBuilder->expr()->eq(
+                            'uid_foreign',
+                            $queryBuilder->createNamedParameter($additionalSlotArguments['contentRecord']['uid'])
+                        )
                     )
                 )
-                ->execute()
-                ->fetchAll();
+                ->executeQuery()
+                ->fetchAllAssociative();
 
             foreach ($rows as $row) {
                 $categoryIds[] = (int)$row['uid_local'];
             }
         }
 
-        if (isset($additionalSlotArguments['settings']['pluginConfiguration']) && $additionalSlotArguments['settings']['pluginConfiguration'] instanceof PluginConfiguration) {
+        if (
+            isset($additionalSlotArguments['settings']['pluginConfiguration'])
+            && $additionalSlotArguments['settings']['pluginConfiguration'] instanceof PluginConfiguration
+        ) {
             /** @var PluginConfiguration $pluginConfiguration */
             $pluginConfiguration = $additionalSlotArguments['settings']['pluginConfiguration'];
             $categories = $pluginConfiguration->getCategories();
@@ -80,5 +75,20 @@ class PagesEventConstraintsListener
             }
         }
         return $categoryIds;
+    }
+
+    protected function getPageUidsByReferencedCategories(array $categoryIds): array
+    {
+        $queryBuilder = HelperUtility::getQueryBuilder('pages');
+        return $queryBuilder
+            ->select('uid_foreign')
+            ->from('sys_category_record_mm')
+            ->where(
+                $queryBuilder->expr()->in('uid_local', $categoryIds),
+                $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('pages')),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('categories'))
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 }

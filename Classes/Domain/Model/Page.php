@@ -2,57 +2,37 @@
 
 namespace HDNET\CalendarizePages\Domain\Model;
 
-use HDNET\Autoloader\Annotation\DatabaseTable;
 use TYPO3\CMS\Extbase\Domain\Model\Category;
+use TYPO3\CMS\Extbase\Domain\Model\FileReference;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-/**
- * @DatabaseTable("pages")
- */
-class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Page extends AbstractEntity
 {
+    protected string $title = '';
+
+    protected string $subtitle = '';
+
+    protected string $description = '';
+
+    protected string $abstract = '';
+
+    protected string $author = '';
 
     /**
-     * @var string
+     * @var ObjectStorage<Category>
      */
-    protected $title = '';
+    protected ObjectStorage $categories;
 
     /**
-     * @var string
+     * @var ObjectStorage<FileReference>
      */
-    protected $subtitle = '';
-
-    /**
-     * @var string
-     */
-    protected $description = '';
-
-    /**
-     * @var string
-     */
-    protected $abstract = '';
-
-    /**
-     * @var string
-     */
-    protected $author = '';
-    
-    /**
-     * Categories.
-     *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\Category>
-     */
-    protected $categories;
-    /**
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileReference>
-     */
-    
-    protected $media;
+    protected ObjectStorage $media;
 
     public function __construct()
     {
-        $this->media = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->categories = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->media = new ObjectStorage();
+        $this->categories = new ObjectStorage();
     }
 
     public function getTitle(): string
@@ -94,6 +74,7 @@ class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $this->abstract = $abstract;
     }
+
     public function getAuthor(): string
     {
         return $this->author;
@@ -104,17 +85,17 @@ class Page extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         $this->author = $author;
     }
 
-    public function getMedia(): \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+    public function getMedia(): ObjectStorage
     {
         return $this->media;
     }
 
-    public function setMedia(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $media): void
+    public function setMedia(ObjectStorage $media): void
     {
         $this->media = $media;
     }
-    
-    public function getCategories()
+
+    public function getCategories(): ObjectStorage
     {
         return $this->categories;
     }

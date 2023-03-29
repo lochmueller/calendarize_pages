@@ -2,14 +2,6 @@ module.tx_calendarize.view {
   partialRootPaths {
     500 = EXT:calendarize_pages/Resources/Private/Partials/
   }
-
-  # layoutRootPaths {
-  #    500 = EXT:calendarize_pages/Resources/Private/Layouts/
-  # }
-
-  # templateRootPaths {
-  #    500 = EXT:calendarize_pages/Resources/Private/Templates/
-  # }
 }
 
 
@@ -17,12 +9,4 @@ plugin.tx_calendarize.view {
   partialRootPaths {
     500 = EXT:calendarize_pages/Resources/Private/Partials/
   }
-
-  # layoutRootPaths {
-  #    500 = EXT:calendarize_pages/Resources/Private/Layouts/
-  # }
-
-  # templateRootPaths {
-  #    500 = EXT:calendarize_pages/Resources/Private/Templates/
-  # }
 }

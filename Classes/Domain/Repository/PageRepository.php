@@ -13,12 +13,8 @@ class PageRepository extends Repository
 {
     /**
      * Get the IDs of the given search term.
-     *
-     * @param string $searchTerm
-     *
-     * @return array
      */
-    public function getIdsBySearch(string $searchTerm, int $category)
+    public function getIdsBySearch(string $searchTerm, int $category): array
     {
         $query = $this->createQuery();
         $constraint = [];
@@ -30,7 +26,7 @@ class PageRepository extends Repository
             $constraint['categories'] = $query->contains('categories', $category);
         }
 
-        $query->matching($query->logicalOr($constraint));
+        $query->matching($query->logicalOr(...$constraint));
         $rows = $query->execute(true);
 
         $ids = [];
@@ -49,6 +45,6 @@ class PageRepository extends Repository
             $query->like('description', '%' . $searchWord . '%'),
         ];
 
-        return $query->logicalOr($logicalOrConstraints);
+        return $query->logicalOr(...$logicalOrConstraints);
     }
 }
