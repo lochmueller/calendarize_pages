@@ -1,16 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HDNET\CalendarizePages\EventListener;
 
 use HDNET\Calendarize\Domain\Model\PluginConfiguration;
 use HDNET\Calendarize\Event\IndexRepositoryDefaultConstraintEvent;
 use HDNET\Calendarize\Utility\HelperUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
+/**
+ * @deprecated Remove when dropping TYPO3 v11
+ */
 class PagesEventConstraintsListener
 {
     public function __invoke(IndexRepositoryDefaultConstraintEvent $event): void
     {
+        if (GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion() >= 12) {
+            // Calendarize v13 and later handles this for all custom events with the category field 'categories'
+            return;
+        }
         if (!empty($event->getIndexTypes()) && !in_array('CalendarizePages', $event->getIndexTypes(), true)) {
             return;
         }
