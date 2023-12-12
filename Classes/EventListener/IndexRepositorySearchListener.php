@@ -13,8 +13,11 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 class IndexRepositorySearchListener
 {
-    public function __construct(protected PageRepository $pageRepository)
+    protected PageRepository $pageRepository;
+
+    public function __construct(PageRepository $pageRepository)
     {
+        $this->pageRepository = $pageRepository;
     }
 
     public function __invoke(IndexRepositoryFindBySearchEvent $event): void

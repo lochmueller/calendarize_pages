@@ -4,6 +4,7 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
+// @deprecated Use 'label', 'value', icon' once dropping TYPO3 v11 (see TYPO3 deprecation: #99739)
 ExtensionManagementUtility::addTcaSelectItem(
     'pages',
     'doktype',
