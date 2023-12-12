@@ -30,34 +30,7 @@ ArrayUtility::mergeRecursiveWithOverrule(
     ]
 );
 
-$GLOBALS['TCA']['pages']['columns'] = array_replace_recursive(
-    $GLOBALS['TCA']['pages']['columns'],
-    [
-        'calendarize' => [
-            'label' => 'Calendarize',
-            'l10n_mode' => 'exclude',
-            'config' => [
-                'type' => 'inline',
-                'foreign_table' => 'tx_calendarize_domain_model_configuration',
-                'minitems' => 0,
-                'maxitems' => 99,
-                'behaviour' => [
-                    'enableCascadingDelete' => true,
-                ],
-            ],
-        ],
-        'calendarize_info' => [
-            'label' => 'LLL:EXT:calendarize/Resources/Private/Language/locallang.xlf:tca.information',
-            'config' => [
-                'type' => 'none',
-                'renderType' => 'calendarizeInfoElement',
-                'parameters' => [
-                    'items' => 10,
-                ],
-            ],
-        ],
-    ]
-);
+\HDNET\Calendarize\Register::createTcaConfiguration(\HDNET\CalendarizePages\Register::getConfiguration());
 
 $GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
     'calendarize' => [
@@ -66,10 +39,3 @@ $GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
         ],
     ],
 ];
-
-ExtensionManagementUtility::addToAllTCAtypes(
-    'pages',
-    'calendarize, calendarize_info',
-    '132',
-    'after:subtitle'
-);
