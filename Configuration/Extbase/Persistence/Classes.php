@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use HDNET\CalendarizePages\Domain\Model\Page;
+
 return [
-    \HDNET\CalendarizePages\Domain\Model\Page::class => [
+    Page::class => [
         'tableName' => 'pages',
     ],
 ];

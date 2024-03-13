@@ -1,5 +1,7 @@
 <?php
 
+use HDNET\Calendarize\Register;
+use HDNET\CalendarizePages\Register as RegisterAlias;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -31,7 +33,7 @@ ArrayUtility::mergeRecursiveWithOverrule(
     ]
 );
 
-\HDNET\Calendarize\Register::createTcaConfiguration(\HDNET\CalendarizePages\Register::getConfiguration());
+Register::createTcaConfiguration(RegisterAlias::getConfiguration());
 
 $GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
     'calendarize' => [

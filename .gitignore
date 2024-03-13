@@ -1,2 +1,5 @@
 /.Build/
 /.php_cs.cache
+/.idea
+/composer.lock
+/.php-cs-fixer.cache

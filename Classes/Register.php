@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace HDNET\CalendarizePages;
 
+use HDNET\CalendarizePages\Domain\Model\Page;
+
 class Register
 {
     public static function getConfiguration(): array
@@ -11,7 +13,7 @@ class Register
         return [
             'uniqueRegisterKey' => 'CalendarizePages',
             'title' => 'Calendarize Page',
-            'modelName' => \HDNET\CalendarizePages\Domain\Model\Page::class,
+            'modelName' => Page::class,
             'partialIdentifier' => 'CalendarizePages',
             'tableName' => 'pages',
             'required' => false,

@@ -41,9 +41,9 @@ class IndexRepositorySearchListener
         // Blocks result (displaying no event) on no search match (empty id array)
         $searchTermIds[] = -1;
 
-        $indexIds = $event->getIndexIds();
+        $indexIds = $event->getForeignIds();
         $indexIds['pages'] = $searchTermIds;
-        $event->setIndexIds($indexIds);
+        $event->setForeignIds($indexIds);
     }
 
     protected function getSearchDto(IndexRepositoryFindBySearchEvent $event): Search

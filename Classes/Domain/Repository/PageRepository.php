@@ -2,18 +2,12 @@
 
 namespace HDNET\CalendarizePages\Domain\Repository;
 
-use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * Repository for Page models.
- */
 class PageRepository extends Repository
 {
-    /**
-     * Get the IDs of the given search term.
-     */
     public function findBySearch(string $searchTerm, array $categories): array
     {
         $query = $this->createQuery();
@@ -37,7 +31,7 @@ class PageRepository extends Repository
 
         $ids = [];
         foreach ($rows as $row) {
-            $ids[] = (int) $row['uid'];
+            $ids[] = (int)$row['uid'];
         }
 
         return $ids;
