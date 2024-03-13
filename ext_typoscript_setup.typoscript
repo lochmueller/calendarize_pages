@@ -1,0 +1,13 @@
+# Deprecated: remove when dropping TYPO3 v11
+module.tx_calendarize.view {
+  partialRootPaths {
+    500 = EXT:calendarize_pages/Resources/Private/Partials/
+  }
+}
+
+
+plugin.tx_calendarize.view {
+  partialRootPaths {
+    500 = EXT:calendarize_pages/Resources/Private/Partials/
+  }
+}

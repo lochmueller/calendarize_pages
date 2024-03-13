@@ -1,53 +1,66 @@
 <?php
-/**
- * Event register
- */
+
 declare(strict_types=1);
 
 namespace HDNET\CalendarizePages\EventListener;
 
+use HDNET\Calendarize\Domain\Model\Dto\Search;
 use HDNET\Calendarize\Event\IndexRepositoryFindBySearchEvent;
 use HDNET\CalendarizePages\Domain\Repository\PageRepository;
-use HDNET\CalendarizePages\EventRegister;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 class IndexRepositorySearchListener
 {
+    protected PageRepository $pageRepository;
 
-    public function __invoke(IndexRepositoryFindBySearchEvent $event)
+    public function __construct(PageRepository $pageRepository)
     {
-        if (!\in_array($this->getUniqueRegisterKey(), $event->getIndexTypes(), true)) {
+        $this->pageRepository = $pageRepository;
+    }
+
+    public function __invoke(IndexRepositoryFindBySearchEvent $event): void
+    {
+        if (!in_array('CalendarizePages', $event->getIndexTypes(), true)) {
             return;
         }
 
+        $search = $this->getSearchDto($event);
+
+        if (!$search->isSearch()) {
+            return;
+        }
+
+        /** @var Typo3QuerySettings $querySettings */
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
+        $querySettings->setRespectStoragePage(false);
+        $this->pageRepository->setDefaultQuerySettings($querySettings);
+        $searchTermIds = $this->pageRepository->findBySearch($search->getFullText(), $search->getCategories());
+
+        // Blocks result (displaying no event) on no search match (empty id array)
+        $searchTermIds[] = -1;
+
+        $indexIds = $event->getIndexIds();
+        $indexIds['pages'] = $searchTermIds;
+        $event->setIndexIds($indexIds);
+    }
+
+    protected function getSearchDto(IndexRepositoryFindBySearchEvent $event): Search
+    {
         $customSearch = $event->getCustomSearch();
-        $fullText = isset($customSearch['fullText']) ? trim((string)$customSearch['fullText']): '';
-        $category = isset($customSearch['category']) ? (int)$customSearch['category']: 0;
-        if ($fullText === '' && $category === 0) {
-            return;
+
+        $search = new Search();
+        $search->setFullText(trim((string)($customSearch['fullText'] ?? '')));
+
+        if (is_array($customSearch['categories'] ?? false)) {
+            $categories = array_map('intval', $customSearch['categories']);
+            $search->setCategories($categories);
+        } elseif (MathUtility::canBeInterpretedAsInteger($customSearch['category'] ?? '')) {
+            // Fallback for previous mode
+            $search->setCategories([(int)$customSearch['category']]);
         }
 
-        $pageRepository = GeneralUtility::makeInstance(ObjectManager::class)->get(PageRepository::class);
-        $searchTermHits = $pageRepository->getIdsBySearch($fullText, $category);
-        if ($searchTermHits && \count($searchTermHits)) {
-            $indexIds = $event->getIndexIds();
-            $indexIds['pages'] = $searchTermHits;
-            $event->setIndexIds($indexIds);
-        }
-
+        return $search;
     }
-
-    /**
-     * Unique register key.
-     *
-     * @return string
-     */
-    protected function getUniqueRegisterKey()
-    {
-        $config = EventRegister::getConfigurationPages();
-
-        return $config['uniqueRegisterKey'];
-    }
-
 }

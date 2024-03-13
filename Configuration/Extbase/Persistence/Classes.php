@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
-use HDNET\Autoloader\Utility\ExtbasePersistenceUtility;
-
-return ExtbasePersistenceUtility::getClassMappingForExtension('calendarize_pages');
+return [
+    \HDNET\CalendarizePages\Domain\Model\Page::class => [
+        'tableName' => 'pages',
+    ],
+];

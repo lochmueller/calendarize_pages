@@ -1,44 +1,39 @@
 <?php
 
-use HDNET\Autoloader\Utility\ArrayUtility;
-use HDNET\Autoloader\Utility\ModelUtility;
-use HDNET\CalendarizePages\EventRegister;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-$GLOBALS['TCA']['pages'] = ModelUtility::getTcaOverrideInformation('calendarize_pages', 'pages');
-
-$custom = [];
-
-$GLOBALS['TCA']['pages'] = ArrayUtility::mergeRecursiveDistinct($GLOBALS['TCA']['pages'], $custom);
-
-
+// @deprecated Use 'label', 'value', icon' once dropping TYPO3 v11 (see TYPO3 deprecation: #99739)
 ExtensionManagementUtility::addTcaSelectItem(
     'pages',
     'doktype',
     [
-        'Event',
-        (string) EventRegister::DOKTYPE_EVENT,
+        'LLL:EXT:calendarize_pages/Resources/Private/Language/locallang_tca.xlf:pages.doktype.event',
+        '132',
         'calendarize-pages-extension',
     ],
     '1',
     'after'
 );
 
-\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule(
+ArrayUtility::mergeRecursiveWithOverrule(
     $GLOBALS['TCA']['pages'],
     [
         'ctrl' => [
             'typeicon_classes' => [
-                (string) EventRegister::DOKTYPE_EVENT => 'calendarize-pages-extension',
+                '132' => 'calendarize-pages-extension',
             ],
         ],
         'types' => [
-            (string) EventRegister::DOKTYPE_EVENT => $GLOBALS['TCA']['pages']['types'][\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
+            '132' => $GLOBALS['TCA']['pages']['types'][PageRepository::DOKTYPE_DEFAULT],
         ],
     ]
 );
 
-$GLOBALS['TCA']['pages']['types'][(string) EventRegister::DOKTYPE_EVENT]['columnsOverrides'] = [
+\HDNET\Calendarize\Register::createTcaConfiguration(\HDNET\CalendarizePages\Register::getConfiguration());
+
+$GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
     'calendarize' => [
         'config' => [
             'minitems' => 1,

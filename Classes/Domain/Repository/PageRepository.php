@@ -13,24 +13,26 @@ class PageRepository extends Repository
 {
     /**
      * Get the IDs of the given search term.
-     *
-     * @param string $searchTerm
-     *
-     * @return array
      */
-    public function getIdsBySearch(string $searchTerm, int $category)
+    public function findBySearch(string $searchTerm, array $categories): array
     {
         $query = $this->createQuery();
-        $constraint = [];
+        $constraints = [];
+
+        $constraints[] = $query->equals('doktype', 132);
 
         if ($searchTerm !== '') {
-            $constraint['searchTerm'] = $this->getConstraintForSearchWord($query, $searchTerm);
+            $constraints['searchTerm'] = $this->getConstraintForSearchWord($query, $searchTerm);
         }
-        if ($category) {
-            $constraint['categories'] = $query->contains('categories', $category);
+        if (count($categories)) {
+            $categoriesIds = [];
+            foreach ($categories as $category) {
+                $categoriesIds[] = $query->contains('categories', $category);
+            }
+            $constraints['categories'] = $query->logicalOr(...$categoriesIds);
         }
 
-        $query->matching($query->logicalOr($constraint));
+        $query->matching($query->logicalAnd(...$constraints));
         $rows = $query->execute(true);
 
         $ids = [];
@@ -49,6 +51,6 @@ class PageRepository extends Repository
             $query->like('description', '%' . $searchWord . '%'),
         ];
 
-        return $query->logicalOr($logicalOrConstraints);
+        return $query->logicalOr(...$logicalOrConstraints);
     }
 }
