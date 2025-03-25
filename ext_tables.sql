@@ -3,5 +3,9 @@
 #
 CREATE TABLE pages
 (
-	calendarize tinytext
+    `location`         text         DEFAULT NULL,
+    `location_link`    text         DEFAULT NULL,
+    `organizer`        text         DEFAULT NULL,
+    `organizer_link`   text         DEFAULT NULL,
+    `calendarize`      tinytext     DEFAULT NULL
 );
