@@ -19,6 +19,14 @@ class Page extends AbstractEntity
 
     protected string $author = '';
 
+    protected string $location = '';
+
+    protected string $locationLink = '';
+
+    protected string $organizer = '';
+
+    protected string $organizerLink = '';
+
     /**
      * @var ObjectStorage<Category>
      */
@@ -98,5 +106,45 @@ class Page extends AbstractEntity
     public function getCategories(): ObjectStorage
     {
         return $this->categories;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(string $location): void
+    {
+        $this->location = $location;
+    }
+
+    public function getOrganizer(): string
+    {
+        return $this->organizer;
+    }
+
+    public function setOrganizer(string $organizer): void
+    {
+        $this->organizer = $organizer;
+    }
+
+    public function getLocationLink(): string
+    {
+        return $this->locationLink;
+    }
+
+    public function setLocationLink(string $locationLink): void
+    {
+        $this->locationLink = $locationLink;
+    }
+
+    public function getOrganizerLink(): string
+    {
+        return $this->organizerLink;
+    }
+
+    public function setOrganizerLink(string $organizerLink): void
+    {
+        $this->organizerLink = $organizerLink;
     }
 }

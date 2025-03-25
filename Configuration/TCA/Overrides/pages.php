@@ -42,3 +42,57 @@ $GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
         ],
     ],
 ];
+
+$additionalTCAcolumns = [
+    'location' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_calendarize_domain_model_event.location',
+        'config' => [
+            'type' => 'input',
+        ],
+    ],
+    'location_link' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_calendarize_domain_model_event.location_link',
+        'config' => [
+            'type' => 'link',
+        ],
+    ],
+    'organizer' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_calendarize_domain_model_event.organizer',
+        'config' => [
+            'type' => 'input',
+        ],
+    ],
+    'organizer_link' => [
+        'exclude' => true,
+        'label' => $ll . 'tx_calendarize_domain_model_event.organizer_link',
+        'config' => [
+            'type' => 'link',
+        ],
+    ],
+];
+
+$GLOBALS['TCA']['pages'] = [
+    'palettes' => [
+        'location' => [
+            'showitem' => 'location,location_link',
+        ],
+        'organizer' => [
+            'showitem' => 'organizer,organizer_link',
+        ],
+    ],
+];
+
+ExtensionManagementUtility::addTCAcolumns(
+    'pages',
+    $additionalTCAcolumns
+);
+
+ExtensionManagementUtility::addToAllTCAtypes(
+    'pages',
+    '--palette--;;location, --palette--;;organizer',
+    '132',
+    'before:calendarize'
+);
