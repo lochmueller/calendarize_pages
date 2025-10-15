@@ -46,28 +46,28 @@ $GLOBALS['TCA']['pages']['types']['132']['columnsOverrides'] = [
 $additionalTCAcolumns = [
     'location' => [
         'exclude' => true,
-        'label' => $ll . 'tx_calendarize_domain_model_event.location',
+        'label' => 'LLL:EXT:calendarize/Resources/Private/Language/locallang.xlf:tx_calendarize_domain_model_event.location',
         'config' => [
             'type' => 'input',
         ],
     ],
     'location_link' => [
         'exclude' => true,
-        'label' => $ll . 'tx_calendarize_domain_model_event.location_link',
+        'label' => 'LLL:EXT:calendarize/Resources/Private/Language/locallang.xlf:tx_calendarize_domain_model_event.location_link',
         'config' => [
             'type' => 'link',
         ],
     ],
     'organizer' => [
         'exclude' => true,
-        'label' => $ll . 'tx_calendarize_domain_model_event.organizer',
+        'label' => 'LLL:EXT:calendarize/Resources/Private/Language/locallang.xlf:tx_calendarize_domain_model_event.organizer',
         'config' => [
             'type' => 'input',
         ],
     ],
     'organizer_link' => [
         'exclude' => true,
-        'label' => $ll . 'tx_calendarize_domain_model_event.organizer_link',
+        'label' => 'LLL:EXT:calendarize/Resources/Private/Language/locallang.xlf:tx_calendarize_domain_model_event.organizer_link',
         'config' => [
             'type' => 'link',
         ],
