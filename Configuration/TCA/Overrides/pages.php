@@ -74,16 +74,17 @@ $additionalTCAcolumns = [
     ],
 ];
 
-$GLOBALS['TCA']['pages'] = [
-    'palettes' => [
+ArrayUtility::mergeRecursiveWithOverrule(
+    $GLOBALS['TCA']['pages']['palettes'],
+    [
         'location' => [
             'showitem' => 'location,location_link',
         ],
         'organizer' => [
             'showitem' => 'organizer,organizer_link',
         ],
-    ],
-];
+    ]
+);
 
 ExtensionManagementUtility::addTCAcolumns(
     'pages',
